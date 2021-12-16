@@ -131,4 +131,7 @@ AUTHORIZED_SOURCES = {
     "circleci": EventSource(
         "Circleci-Signature", circleci_verification
         ),
+    "aws-codepipeline": EventSource(
+        "X-Torre-Secret", simple_token_verification
+    )
 }
