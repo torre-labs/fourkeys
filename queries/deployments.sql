@@ -58,6 +58,17 @@ WITH deploys_cloudbuild_github_gitlab AS (# Cloud Build, Github, Gitlab pipeline
       FROM four_keys.events_raw
       WHERE (source = "circleci" AND event_type = "workflow-completed" AND JSON_EXTRACT_SCALAR(metadata, '$.workflow.name') LIKE "%deploy%" AND JSON_EXTRACT_SCALAR(metadata, '$.workflow.status') = "success")
     ),
+    deploys_aws_codepipeline AS ( # AWS CodePipeline
+      SELECT
+      source,
+      id as deploy_id,
+      time_created,
+      json_extract_scalar(revisions, '$.revisionId') as main_commit,
+      ARRAY<string>[] AS additional_commits
+      FROM four_keys.events_raw,
+      UNNEST(JSON_EXTRACT_ARRAY(metadata, '$.execution.pipelineExecution.artifactRevisions')) as revisions
+      WHERE source = 'aws-codepipeline' AND json_extract_scalar(metadata, '$.execution.pipelineExecution.pipelineName') NOT LIKE '%staging%'
+    ),
     deploys AS (
       SELECT * FROM
       deploys_cloudbuild_github_gitlab
@@ -65,6 +76,8 @@ WITH deploys_cloudbuild_github_gitlab AS (# Cloud Build, Github, Gitlab pipeline
       SELECT * FROM deploys_tekton
       UNION ALL
       SELECT * FROM deploys_circleci
+      UNION ALL
+      SELECT * FROM deploys_aws_codepipeline
     ),
     changes_raw AS (
       SELECT
