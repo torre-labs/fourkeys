@@ -133,5 +133,8 @@ AUTHORIZED_SOURCES = {
         ),
     "aws-codepipeline": EventSource(
         "X-Torre-Secret", simple_token_verification
-    )
+    ),
+    "incident-reporter": EventSource(
+        "X-Torre-Secret", simple_token_verification
+    ),
 }

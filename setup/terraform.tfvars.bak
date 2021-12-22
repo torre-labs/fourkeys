@@ -1,0 +1,4 @@
+google_project_id = "fourkeys-009695"
+google_region = "us-central1"
+bigquery_region = "US"
+parsers = ["github", "aws-codepipeline"]
