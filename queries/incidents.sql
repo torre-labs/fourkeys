@@ -33,7 +33,7 @@ FROM
                                                   "$.properties['Solved time'].date.start") END) as time_resolved,
        CASE
            WHEN source LIKE "incident-reporter" AND event_type = "incident"
-               THEN JSON_EXTRACT_SCALAR(metadata, "$.properties['Introduced at (commit)'].plain_text")
+               THEN JSON_EXTRACT_SCALAR(metadata, "$.properties['Introduced at (commit)'].rich_text[0].plain_text")
            ELSE REGEXP_EXTRACT(metadata, r"root cause: ([[:alnum:]]*)") END                      as root_cause,
        CASE
            WHEN source LIKE "github%" THEN REGEXP_CONTAINS(JSON_EXTRACT(metadata, '$.issue.labels'),
