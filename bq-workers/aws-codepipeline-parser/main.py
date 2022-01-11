@@ -62,6 +62,8 @@ def index():
 
 
 def process_new_source_event(msg):
+    signature = shared.create_unique_id(msg)
+
     metadata = json.loads(base64.b64decode(msg["data"]).decode("utf-8").strip())
 
     new_source_event = {
@@ -69,7 +71,7 @@ def process_new_source_event(msg):
         "id": "aws-%s" % metadata["execution"]["pipelineExecution"]["pipelineExecutionId"], 
         "metadata": json.dumps(metadata),  
         "time_created": metadata["event"]["time"], 
-        "signature": metadata["execution"]["pipelineExecution"]["pipelineExecutionId"], 
+        "signature": signature,
         "msg_id": msg["message_id"],  # The pubsub message id
         "source": "aws-codepipeline",
     }

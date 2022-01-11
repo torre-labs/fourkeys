@@ -63,6 +63,8 @@ def index():
 
 
 def process_new_source_event(msg):
+    signature = shared.create_unique_id(msg)
+
     metadata = json.loads(base64.b64decode(msg["data"]).decode("utf-8").strip())
 
     new_source_event = {
@@ -70,7 +72,7 @@ def process_new_source_event(msg):
         "id": "notion-%s" % metadata["id"],
         "metadata": json.dumps(metadata),
         "time_created": metadata["created_time"],
-        "signature": metadata["id"],
+        "signature": signature,
         "msg_id": msg["message_id"],
         "source": "incident-reporter",
     }
