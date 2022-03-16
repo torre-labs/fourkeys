@@ -84,6 +84,7 @@ WITH deploys_cloudbuild_github_gitlab AS (# Cloud Build, Github, Gitlab pipeline
       id,
       metadata as change_metadata
       FROM four_keys.events_raw
+      WHERE JSON_EXTRACT_SCALAR(`metadata`, '$.ref') = CONCAT('refs/heads/', JSON_EXTRACT_SCALAR(`metadata`, '$.repository.master_branch'))
     ),
     deployment_changes as (
       SELECT
