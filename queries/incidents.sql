@@ -41,7 +41,7 @@ FROM
            WHEN source LIKE "gitlab%" THEN REGEXP_CONTAINS(JSON_EXTRACT(metadata, '$.object_attributes.labels'),
                                                            '"title":"Incident"')
            WHEN source LIKE "incident-reporter" AND event_type = "incident" THEN
-                   JSON_EXTRACT_SCALAR(metadata, '$.properties.Priority.select.name') IN ("High", "Highest")
+                   JSON_EXTRACT_SCALAR(metadata, '$.properties.Priority.select.name') IN ("Medium", "High", "Highest")
            END                                                                                   as bug,
     FROM four_keys.events_raw
     WHERE event_type = "incident"

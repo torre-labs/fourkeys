@@ -512,7 +512,7 @@
           "orderByCol": "1",
           "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT\n  TIMESTAMP_TRUNC(time_created, DAY) as day,\n  #### Median time to resolve\n  PERCENTILE_CONT(\n    TIMESTAMP_DIFF(time_resolved, time_created, HOUR), 0.5)\n    OVER(PARTITION BY TIMESTAMP_TRUNC(time_created, DAY)\n    ) as daily_med_time_to_restore,\n  FROM four_keys.incidents\nORDER BY day",
+          "rawSql": "SELECT DISTINCT\n  TIMESTAMP_TRUNC(time_created, DAY) as day,\n  #### Median time to resolve\n  PERCENTILE_CONT(\n    TIMESTAMP_DIFF(time_resolved, time_created, HOUR), 0.5)\n    OVER(PARTITION BY TIMESTAMP_TRUNC(time_created, DAY)\n    ) as daily_med_time_to_restore,\n  FROM four_keys.incidents\nORDER BY day",
           "refId": "A",
           "select": [
             [
