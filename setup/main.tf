@@ -5,6 +5,12 @@ terraform {
       version = "~> 3.85.0"
     }
   }
+  cloud {
+    organization = "torre-labs"
+    workspaces {
+      name = "fourkeys"
+    }
+  }
 }
 
 resource "google_project_service" "run_api" {

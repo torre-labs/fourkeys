@@ -1,0 +1,7 @@
+.nox/
+.pytest_cache/
+.github/
+data_generator/
+experimental/
+images/
+venv/
